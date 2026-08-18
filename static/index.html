@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Synapse.AI - Intelligence Designed To Evolve</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+  <link href="https://db.onlinewebfonts.com/c/8cb707a9b8a73f8a7403336b861c3074?family=BubbledotICG-FinePos" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="bg">
+    <video class="bg-video" autoplay muted loop playsinline>
+      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260809_012548_ef22562c-c0ae-4816-ad9d-f8922af4e6a7.mp4" type="video/mp4" />
+    </video>
+  </div>
+
+  <div class="page">
+    <!-- Header -->
+    <header class="header">
+      <a href="#" class="logo-btn">
+        <img src="/static/assets/logo.webp" alt="" width="52" height="52" onerror="this.style.display='none'">
+        <i class="fa-solid fa-brain fallback-logo"></i>
+      </a>
+
+      <nav class="nav-pill desktop-only">
+        <a href="#" class="nav-link active">Parser</a>
+        <a href="#" class="nav-link">History</a>
+        <a href="#" class="nav-link">Settings</a>
+      </nav>
+      
+      <a href="#" class="sign-in desktop-only" id="export-csv" style="display: none;">Export CSV</a>
+
+      <button class="burger mobile-only" aria-expanded="false" aria-label="Toggle menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </header>
+
+    <!-- Main Workspace (Parser View) -->
+    <main id="parser-view" class="workspace view-section anim" style="--d: 0.1s">
+      <div class="app-header">
+        <h1 class="headline">
+          <span class="line" style="--d: 0.12s">Synapse</span>
+          <span class="line" style="--d: 0.3s">Resume Parser</span>
+        </h1>
+        <p class="subhead anim" style="--d: 0.28s">Upload resumes and paste your job description to intelligently rank candidates.</p>
+      </div>
+
+      <div class="panels-container">
+        <!-- JD Panel -->
+        <div class="glass-panel jd-panel anim" style="--d: 0.4s">
+          <div class="panel-header">
+            <i class="fa-solid fa-briefcase"></i>
+            <h2>Job Description</h2>
+          </div>
+          <textarea id="jd-input" placeholder="Paste your Job Description here..."></textarea>
+        </div>
+
+        <!-- Resumes Panel -->
+        <div class="glass-panel resumes-panel anim" style="--d: 0.5s">
+          <div class="panel-header">
+            <i class="fa-solid fa-file-pdf"></i>
+            <h2>Resumes (<span id="file-count">0</span>)</h2>
+          </div>
+          <div class="drop-zone" id="drop-zone">
+            <i class="fa-solid fa-cloud-arrow-up drop-icon"></i>
+            <p>Drag & Drop PDFs or DOCX</p>
+            <span class="browse-btn">Browse Files</span>
+            <input type="file" id="file-input" multiple hidden accept=".pdf,.docx,.doc,.txt">
+          </div>
+          <div class="file-list-container">
+            <ul id="file-list" class="file-list"></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-row anim" style="--d: 0.6s">
+        <button class="cta anim-pulse" id="parse-btn">Parse & Match Resumes</button>
+      </div>
+      
+      <!-- Progress and Status -->
+      <div id="status-container" class="status-container hidden">
+        <div class="status-text" id="status-text">Initializing...</div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="disclaimer anim" style="--d: 0.7s; text-align: center; margin-top: 16px; color: var(--muted); font-size: 13px; opacity: 0.8;">
+        <p>Disclaimer: This AI tool provides resume matching suggestions. Human review is recommended.</p>
+        <p style="margin-top: 6px; font-weight: 500; font-family: var(--font-display); letter-spacing: 0.05em; color: #a0a0a0;">Made by Akshat Shukla</p>
+      </div>
+    </main>
+
+    <!-- History View -->
+    <main id="history-view" class="workspace view-section hidden">
+      <div class="app-header">
+        <h1 class="headline">History</h1>
+        <p class="subhead">Review your past resume parsing sessions.</p>
+      </div>
+      <div class="glass-panel" style="flex: 1; align-items: center; justify-content: center; text-align: center;">
+        <i class="fa-solid fa-clock-rotate-left drop-icon" style="font-size: 48px; margin-bottom: 20px;"></i>
+        <h3 style="color: #fff; font-size: 20px; font-weight: 500; margin-bottom: 8px;">No History Found</h3>
+        <p style="color: var(--muted); font-size: 14px;">Your past parsing sessions will appear here.</p>
+      </div>
+    </main>
+
+    <!-- Settings View -->
+    <main id="settings-view" class="workspace view-section hidden">
+      <div class="app-header">
+        <h1 class="headline">Settings</h1>
+        <p class="subhead">Configure your Synapse AI preferences.</p>
+      </div>
+      <div class="glass-panel" style="flex: 1; align-items: stretch; max-width: 600px; margin: 0 auto; width: 100%;">
+        
+        <div id="settings-error" class="hidden" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--red-neon); padding: 12px; border-radius: 8px; font-size: 14px; margin-bottom: 20px; text-align: center; font-weight: 500;">
+          API Key is required to parse resumes. Please provide it below.
+        </div>
+
+        <div style="margin-bottom: 24px; text-align: left; background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; border: 1px solid var(--glass-border);">
+          <h4 style="color: #fff; font-size: 15px; margin-bottom: 12px;"><i class="fa-solid fa-map-location-dot"></i> How to get a Groq API Key</h4>
+          <ol style="color: var(--muted); font-size: 13px; margin-left: 20px; line-height: 1.6;">
+            <li>Visit <a href="https://console.groq.com/keys" target="_blank" style="color: var(--green-neon); text-decoration: none;">console.groq.com</a> and sign in.</li>
+            <li>Navigate to the "API Keys" section.</li>
+            <li>Click the "Create API Key" button.</li>
+            <li>Copy your new key (it starts with <code>gsk_</code>) and paste it below.</li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom: 24px; text-align: left;">
+          <label style="display: block; color: #fff; font-size: 14px; font-weight: 500; margin-bottom: 8px;">API Key (Groq)</label>
+          <input type="password" id="api-key-input" placeholder="gsk_..." style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: 8px; color: #fff; padding: 14px; font-family: var(--font-sans); outline: none;">
+          <p style="color: var(--muted); font-size: 12px; margin-top: 6px;">Your API key is stored locally in your browser.</p>
+        </div>
+
+        <div style="margin-bottom: 32px; text-align: left;">
+          <label style="display: block; color: #fff; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Matching Strictness</label>
+          <select id="strictness-input" style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: 8px; color: #fff; padding: 14px; font-family: var(--font-sans); outline: none; appearance: none; cursor: pointer;">
+            <option value="standard">Standard (Recommended)</option>
+            <option value="lenient">Lenient</option>
+            <option value="strict">Strict</option>
+          </select>
+        </div>
+
+        <button class="cta" id="save-settings-btn" style="width: 100%; justify-content: center; gap: 8px;"><i class="fa-solid fa-check"></i> Save Preferences</button>
+      </div>
+    </main>
+
+    <!-- Results Modal / View -->
+    <div id="results-view" class="results-view hidden">
+      <div class="results-header">
+        <h2 class="headline"><span class="line">Match Results</span></h2>
+        <div class="results-actions">
+          <button class="glass-btn" id="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</button>
+          <button class="cta" id="modal-export-csv"><i class="fa-solid fa-download"></i> Export CSV</button>
+        </div>
+      </div>
+      
+      <div class="table-container">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Name</th>
+              <th>Contact</th>
+              <th>Experience</th>
+              <th>Verdict</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody id="results-tbody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+  <script src="/static/main.js"></script>
+</body>
+</html>
